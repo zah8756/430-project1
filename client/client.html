@@ -13,13 +13,16 @@
       // console.dir(obj.users);
       
       if(obj.message) {
+        console.dir("activated1");
+        console.dir(obj.message);
         const p = document.createElement('p');
-        p.textContent = `Message: ${obj.message}`;
+        p.textContent = JSON.stringify(obj.message.users["pizza"].name);
         content.appendChild(p);
       }
       
       if(obj.users) {
         // console.dir(obj.users);
+        console.dir("activated2");
         console.dir(obj.users);
         const userList = document.createElement('p');
         const users = JSON.stringify(obj.users);
@@ -38,7 +41,8 @@
 
     const handleResponse = (xhr,parseResponse) => {
       const content = document.querySelector('#content');
-      
+      const response = JSON.parse(xhr.response);
+      console.log(response.message.users["pizza"].name)
       switch(xhr.status) {
         case 200: //success
           content.innerHTML = `<b>Success</b>`;

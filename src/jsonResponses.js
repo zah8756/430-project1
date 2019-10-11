@@ -1,4 +1,11 @@
-const users = {};
+const users = {
+  'pizza':{
+    name:'pizza',
+    age:'22',
+    photo:'https://www.spendwithpennies.com/wp-content/uploads/2018/11/SpendWithPennies-Chicken-Parmesan-24.jpg'
+  }
+
+};
 
 const respondJSON = (request, response, status, object) => {
   response.writeHead(status, { 'Content-Type': 'application/json' });
@@ -13,7 +20,7 @@ const respondJSONMeta = (request, response, status) => {
 
 const getUsers = (request, response) => {
   const responseJSON = {
-    users,
+    message: {users},
   };
 
   respondJSON(request, response, 200, responseJSON);
