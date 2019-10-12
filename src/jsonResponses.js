@@ -1,8 +1,13 @@
 const users = {
-  "piza":{
+  "pizza":{
     name:"pizza",
     age:"22",
     photo:"https://img.buzzfeed.com/thumbnailer-prod-us-east-1/dc23cd051d2249a5903d25faf8eeee4c/BFV36537_CC2017_2IngredintDough4Ways-FB.jpg",
+  },
+  "lemon":{
+    name:"lemon",
+    age:"2",
+    photo:"https://cdn.shopify.com/s/files/1/2336/3219/products/shutterstock_77846398eureka2_x850.jpg?v=1554665666",
   }
 };
 
@@ -31,12 +36,10 @@ const getUsersMeta = (request, response) => respondJSONMeta(request, response, 2
 const notFoundMeta = (request, response) => respondJSONMeta(request, response, 404);
 
 const addUser = (request, response, body) => {
-  const responseJSON = {
-    message: 'Name, Age, and a Photo are required.',
-    
-  };
+  const responseJSON = {};
 
   if (!body.name || !body.age || !body.photo) {
+    responseJSON.message = 'Name, Age, and a Photo are required.'
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -58,10 +61,9 @@ const addUser = (request, response, body) => {
 
 
   if (responseCode === 201) {
-    responseJSON.message = 'Created Successfully';
+    responseJSON.message = 'New recpie created successfully';
     return respondJSON(request, response, responseCode, responseJSON);
   }
-  responseJSON.photo = body.photo;
   return respondJSONMeta(request, response, responseCode);
 };
 

@@ -19,13 +19,32 @@
       }
       
       if(obj.users) {
-        // console.dir(obj.users);
-        console.dir("active")
-        console.dir(obj.users);
-        const userList = document.createElement('p');
-        const users = JSON.stringify(obj.users);
-        userList.textContent = users;
-        content.appendChild(userList);
+        // // console.dir(obj.users);
+        // console.dir("active")
+        // //console.dir(obj.users["pizza"].name);
+        // const userList = document.createElement('p');
+        // const users = JSON.stringify(obj.users);
+        // userList.textContent = users;
+        // content.appendChild(userList);
+
+        for(let key in obj.users){
+          if(obj.users.hasOwnProperty(key)){
+            const div = document.createElement('div');
+            const name = document.createElement('p');
+            const img = document.createElement('IMG');
+
+            name.innerHTML = '<p>Recipe Name </p>'+ obj.users[key].name;
+
+            img.setAttribute('src', obj.users[key].photo);
+
+            div.appendChild(img);
+            div.appendChild(name);
+            content.appendChild(div);
+
+          } else {
+            content.innerHTML += `<p> ${obj.message}</p>`
+          }
+        }
       }
     };
 

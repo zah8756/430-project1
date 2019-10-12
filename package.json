@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./src/server.js",
-    "serve" : "nodemon ./src/server.js",
+    "serve": "nodemon ./src/server.js",
     "pretest": "eslint ./src --fix",
     "test": "echo \"Tests complete\""
   },
