@@ -1,10 +1,9 @@
 const users = {
-  'pizza':{
-    name:'pizza',
-    age:'22',
-    photo:'https://www.spendwithpennies.com/wp-content/uploads/2018/11/SpendWithPennies-Chicken-Parmesan-24.jpg'
+  "piza":{
+    name:"pizza",
+    age:"22",
+    photo:"https://img.buzzfeed.com/thumbnailer-prod-us-east-1/dc23cd051d2249a5903d25faf8eeee4c/BFV36537_CC2017_2IngredintDough4Ways-FB.jpg",
   }
-
 };
 
 const respondJSON = (request, response, status, object) => {
@@ -20,7 +19,7 @@ const respondJSONMeta = (request, response, status) => {
 
 const getUsers = (request, response) => {
   const responseJSON = {
-    message: {users},
+    users,
   };
 
   respondJSON(request, response, 200, responseJSON);
@@ -60,10 +59,9 @@ const addUser = (request, response, body) => {
 
   if (responseCode === 201) {
     responseJSON.message = 'Created Successfully';
-    responseJSON.image = body.photo;
     return respondJSON(request, response, responseCode, responseJSON);
   }
-
+  responseJSON.photo = body.photo;
   return respondJSONMeta(request, response, responseCode);
 };
 
