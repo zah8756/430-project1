@@ -1,14 +1,20 @@
 const users = {
-  "pizza":{
-    name:"pizza",
-    age:"22",
-    photo:"https://img.buzzfeed.com/thumbnailer-prod-us-east-1/dc23cd051d2249a5903d25faf8eeee4c/BFV36537_CC2017_2IngredintDough4Ways-FB.jpg",
+  pizza: {
+    name: 'pizza',
+    cookTime: '12',
+    photo: 'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/dc23cd051d2249a5903d25faf8eeee4c/BFV36537_CC2017_2IngredintDough4Ways-FB.jpg',
+    description: 'is pizza',
+    origin: 'pizza tree',
+    recipeLink: 'https://www.tasteofhome.com/recipes/homemade-pizza/',
   },
-  "lemon":{
-    name:"lemon",
-    age:"2",
-    photo:"https://cdn.shopify.com/s/files/1/2336/3219/products/shutterstock_77846398eureka2_x850.jpg?v=1554665666",
-  }
+  lemon: {
+    name: 'lemon',
+    cookTime: '2',
+    photo: 'https://cdn.shopify.com/s/files/1/2336/3219/products/shutterstock_77846398eureka2_x850.jpg?v=1554665666',
+    description: 'is a lemon',
+    origin: 'lemonTree',
+    recipeLink: 'https://www.allrecipes.com/recipe/231190/the-best-lemon-tart-ever/',
+  },
 };
 
 const respondJSON = (request, response, status, object) => {
@@ -38,8 +44,8 @@ const notFoundMeta = (request, response) => respondJSONMeta(request, response, 4
 const addUser = (request, response, body) => {
   const responseJSON = {};
 
-  if (!body.name || !body.age || !body.photo) {
-    responseJSON.message = 'Name, Age, and a Photo are required.'
+  if (!body.name || !body.cookTime || !body.photo || !body.description || !body.origin || !body.recipeLink) {
+    responseJSON.message = 'All boxes need to be filled.';
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -56,8 +62,12 @@ const addUser = (request, response, body) => {
 
 
   users[body.name].name = body.name;
-  users[body.name].age = body.age;
+  users[body.name].cookTime = body.cookTime;
   users[body.name].photo = body.photo;
+  users[body.name].description = body.description;
+  users[body.name].origin = body.origin;
+  users[body.name].recipeLink = body.recipeLink;
+  
 
 
   if (responseCode === 201) {

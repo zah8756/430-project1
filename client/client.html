@@ -31,14 +31,31 @@
           if(obj.users.hasOwnProperty(key)){
             const div = document.createElement('div');
             const name = document.createElement('p');
+            const rLink = document.createElement('p');
+            const cookTime = document.createElement('p');
+            const description = document.createElement('p');
+            const origin = document.createElement('p');
             const img = document.createElement('IMG');
-
-            name.innerHTML = '<p>Recipe Name </p>'+ obj.users[key].name;
+         
+            console.dir(obj.users[key]);
+            name.innerHTML = '<p>Recipe Name: </p>'+ obj.users[key].name;
+            rLink.innerHTML ='<p>Recipe Link: </p>' + obj.users[key].recipeLink;
+            cookTime.innerHTML = '<p>Cook Time: </p>'+ obj.users[key].cookTime;
+            description.innerHTML = '<p>Description: </p>'+ obj.users[key].description;
+            origin.innerHTML = '<p>Recipe Origin: </p>' + obj.users[key].origin;
+            
 
             img.setAttribute('src', obj.users[key].photo);
+            // recipeLink.setAttribute('href',obj.users[key].recipeLink);
+
 
             div.appendChild(img);
             div.appendChild(name);
+            div.appendChild(rLink);
+            div.appendChild(cookTime);
+            div.appendChild(origin);
+            div.appendChild(description);
+
             content.appendChild(div);
 
           } else {
@@ -88,8 +105,11 @@
       const nameMethod = nameForm.getAttribute('method');
       
       const nameField = nameForm.querySelector('#nameField');
-      const ageField = nameForm.querySelector('#ageField');
+      const recipeLinkField = nameForm.querySelector('#recipeLinkField');
+      const timeField = nameForm.querySelector('#timeField');
       const photoField = nameForm.querySelector('#photoField');
+      const originField = nameForm.querySelector('#originField');
+      const descriptionField = nameForm.querySelector('#descriptionField');
       
       const xhr = new XMLHttpRequest();
       xhr.open(nameMethod, nameAction);
@@ -98,7 +118,7 @@
       xhr.setRequestHeader ('Accept', 'application/json');
       xhr.onload = () => handleResponse(xhr,true);
       
-      const formData = `name=${nameField.value}&age=${ageField.value}&photo=${photoField.value}`;
+      const formData = `name=${nameField.value}&recipeLink=${recipeLinkField.value}&cookTime=${timeField.value}&photo=${photoField.value}&origin=${originField.value}&description=${descriptionField.value}`;
       
       xhr.send(formData);
     
@@ -107,16 +127,23 @@
       return false;
     };
 
-    const sendGetOrHead = (e, nameForm) => {
-      const userMethod = userForm.getAttribute('method');
-
-      const urlField = userForm.querySelector('#urlField');
-      const methodSelect = userForm.querySelector('#methodSelect');
-
+    const sendGetOrHead = (url,type,e) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(methodSelect.value, urlField.value);
+      // const userMethod = userForm.getAttribute('method');
 
-      if(methodSelect.value === 'get'){
+      // const urlField = userForm.querySelector('#urlField');
+      // const methodSelect = userForm.querySelector('#methodSelect');
+      console.dir(url);
+      console.dir(type);
+
+
+
+      xhr.open(type, url);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.setRequestHeader('Accept', 'application/json');
+      
+      
+      if(type === 'get'){
         xhr.onload = () => handleResponse(xhr, true);
       } else {
         xhr.onload = () => handleResponse(xhr, false);
@@ -125,26 +152,37 @@
 
       xhr.send();
         
-      e.preventDefault();
+      // e.preventDefault();
         
-      return false;
+       return false;
     }
 
 
     const init = () => {
 
       const nameForm = document.querySelector('#nameForm');
+      const sendAll = document.getElementById('postData');
+
       const addUser = (e) => sendPost(e, nameForm);
-      nameForm.addEventListener('submit', addUser);
+      postData.addEventListener('click', addUser);
 
 
       const userForm = document.querySelector('#userForm');
-      const getUser = (e) => sendGetOrHead(e, userForm);
-      userForm.addEventListener('submit', getUser);
+      const getRecipe = userForm.querySelector('input');
+
+      // const getUser = (e) => sendGetOrHead(e,'/getUsers','get');
+
+
+      getRecipe.addEventListener('click', e =>{
+        e.preventDefault();
+        sendGetOrHead('/getUsers','get', e);
+      });
+
 
     };
-
+    window.onload = sendGetOrHead('/getUsers','get');
     window.onload = init;
+    //window.onload = sendGetOrHead('get', '/getUsers');
   </script>
 </head>
 <body>
@@ -153,16 +191,29 @@
     <form id="nameForm" action="/addUser" method="post">
       <label for="name">Recipe Name: </label>
       <input id="nameField" type="text" name="name" />
-      <label for="age">Steps: </label>
-      <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
-      <label for="age">Photo: </label>
+
+      <label for="recipeLink">Recipe Link: </label>
+      <input id="recipeLinkField" type="url" name="recipeLink" />
+
+      <label for="cookTime">Cook time: </label>
+      <input id="timeField" type="number" name="cookTime"/>
+
+      <label for="photo">Photo: </label>
       <input id="photoField" type="url" name="photo" />
-      <input type="submit" value="Add User" />
+
+      <label for="origin">Country of origin: </label>
+      <input id="originField" type="text" name="origin" />
+
+      <label for="description">Description of recipe: </label>
+      <input id="descriptionField" type="text" name="description" />
+
+
+      <input id="postData" type="submit" value="Add User" />
     </form>
     <form id="userForm" action="/getUsers" method="get">
-      <select id='urlField'>
-        <option value='/getUsers'>/getUsers</option>
-        <option value='/notReal'>/notReal</option>
+      <select id="'urlField'">
+        <option value="'/getUsers'">/getUsers</option>
+        <option value="'/notReal'">/notReal</option>
       </select>
       <select id="methodSelect">
         <option value="get">GET</option>
