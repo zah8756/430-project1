@@ -9,27 +9,19 @@
   
   <script type="text/babel">
 
+      //parses the JSON data and also creates our boxes 
       const parseJSON = (xhr, content) => {
       const obj = JSON.parse(xhr.response);
-      // console.dir(obj);
-      // console.dir(obj.users);
       
-      // if(obj.message) {
-      //   const p = document.createElement('p');
-      //   p.textContent = `Message: ${obj.message}`;
-      //   content.appendChild(p);
-      // }
+      if(obj.message) {
+        const p = document.createElement('p');
+        p.textContent = `Message: ${obj.message}`;
+        content.appendChild(p);
+      }
       
       if(obj.users) {
         content.innerHTML = '';
-        // // console.dir(obj.users);
-        // console.dir("active")
-        // //console.dir(obj.users["pizza"].name);
-        // const userList = document.createElement('p');
-        // const users = JSON.stringify(obj.users);
-        // userList.textContent = users;
-        // content.appendChild(userList);
-
+  
         for(let key in obj.users){
           if(obj.users.hasOwnProperty(key)){
             const div = document.createElement('div');
@@ -48,9 +40,6 @@
             
             div.setAttribute('class', "recipieBox");
             img.setAttribute('src', obj.users[key].photo);
-            
-            // recipeLink.setAttribute('href',obj.users[key].recipeLink);
-
 
             div.appendChild(img);
             div.appendChild(name);
@@ -60,18 +49,16 @@
             div.appendChild(description);
 
             content.appendChild(div);
-
-          } else {
-            content.innerHTML += `<p> ${obj.message}</p>`
-          }
+          } 
         }
       }
     };
 
+    //changes the display based on XHR status
     const handleResponse = (xhr,parseResponse) => {
       const content = document.querySelector('#content');
 
-      
+      //changes content based on waht status code is used 
       switch(xhr.status) {
         case 200: //success
           console.log("created");
@@ -98,12 +85,12 @@
         if(xhr.status != 204 && parseResponse){
             parseJSON(xhr, content);
         }
-        
         else{
             console.log('received')
         }
     };
 
+    //sends data up to the api based on what inforamtion is found inside nameForm fields 
     const sendPost = (e, nameForm) => {
    
       const nameAction = nameForm.getAttribute('action');
@@ -132,18 +119,13 @@
       return false;
     };
 
+    // snds the get or head rquests to fetch datat from the api 
     const sendGetOrHead = (url,type,e) => {
       const xhr = new XMLHttpRequest();
-      // const userMethod = userForm.getAttribute('method');
-
-      // const urlField = userForm.querySelector('#urlField');
-      // const methodSelect = userForm.querySelector('#methodSelect');
 
       xhr.open(type, url);
-      // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      // xhr.setRequestHeader('Accept', 'application/json');
-      
-      
+  
+      //determines if a get reust or a head reuest is used and what data should be returned 
       if(type === 'get'){
         xhr.onload = () => handleResponse(xhr, true);
       } else {
@@ -153,12 +135,10 @@
 
       xhr.send();
         
-      // e.preventDefault();
-        
        return false;
     }
 
-
+    //creates eventlistners to have our data changed onclick 
     const init = () => {
 
       const nameForm = document.querySelector('#nameForm');
@@ -171,9 +151,7 @@
       const userForm = document.querySelector('#userForm');
       const getRecipe = userForm.querySelector('input');
 
-      // const getUser = (e) => sendGetOrHead(e,'/getUsers','get');
-
-
+      //gets both a get reust and head request onclick 
       getRecipe.addEventListener('click', e =>{
         e.preventDefault();
         sendGetOrHead('/getUsers','get', e);
@@ -182,9 +160,9 @@
 
 
     };
+    //onload pulls our premade recipies from our api 
     window.onload = sendGetOrHead('/getUsers','get');
     window.onload = init;
-    //window.onload = sendGetOrHead('get', '/getUsers');
   </script>
 </head>
 <body>
@@ -222,14 +200,6 @@
       <br><input class="buttonS" id="postData" type="submit" value="Add Recipe" />
     </form>
     <form id="userForm" action="/getUsers" method="get">
-      <!-- <select id="'urlField'">
-        <option value="'/getUsers'">/getUsers</option>
-        <option value="'/notReal'">/notReal</option>
-      </select> -->
-      <!-- <select id="methodSelect">
-        <option value="get">GET</option>
-        <option value="head">HEAD</option>
-      </select> -->
       <input class="buttonS" type="submit" value="reset" />
     </form>
   </section>

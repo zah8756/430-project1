@@ -1,5 +1,5 @@
 const http = require('http');
-const url = require('url'); 
+const url = require('url');
 
 const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
@@ -8,8 +8,8 @@ const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+// handles post requests
 const handlePost = (request, response, parsedUrl) => {
-
   if (parsedUrl.pathname === '/addUser') {
     const res = response;
 
@@ -28,7 +28,6 @@ const handlePost = (request, response, parsedUrl) => {
     });
 
     request.on('end', () => {
-
       const bodyString = Buffer.concat(body).toString();
 
       const bodyParams = query.parse(bodyString);
@@ -38,12 +37,13 @@ const handlePost = (request, response, parsedUrl) => {
   }
 };
 
+// handles  get requests
 const handleGet = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === '/style.css') {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getUsers') {
     jsonHandler.getUsers(request, response);
-  } else if (parsedUrl.pathname === '/' ) {
+  } else if (parsedUrl.pathname === '/') {
     htmlHandler.getIndex(request, response);
   } else if (parsedUrl.pathname === '/notReal') {
     jsonHandler.notFound(request, response);
@@ -52,6 +52,7 @@ const handleGet = (request, response, parsedUrl) => {
   }
 };
 
+// handles head requests
 const handleHead = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === '/getUsers') {
     jsonHandler.getUsersMeta(request, response);
@@ -60,8 +61,8 @@ const handleHead = (request, response, parsedUrl) => {
   }
 };
 
+// tells the server what request is being activated
 const onRequest = (request, response) => {
-
   const parsedUrl = url.parse(request.url);
 
   if (request.method === 'POST') {
