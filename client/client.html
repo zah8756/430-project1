@@ -3,8 +3,10 @@
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <link href="https://fonts.googleapis.com/css?family=David+Libre|Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+  
   <script type="text/babel">
 
       const parseJSON = (xhr, content) => {
@@ -12,13 +14,14 @@
       // console.dir(obj);
       // console.dir(obj.users);
       
-      if(obj.message) {
-        const p = document.createElement('p');
-        p.textContent = `Message: ${obj.message}`;
-        content.appendChild(p);
-      }
+      // if(obj.message) {
+      //   const p = document.createElement('p');
+      //   p.textContent = `Message: ${obj.message}`;
+      //   content.appendChild(p);
+      // }
       
       if(obj.users) {
+        content.innerHTML = '';
         // // console.dir(obj.users);
         // console.dir("active")
         // //console.dir(obj.users["pizza"].name);
@@ -37,15 +40,15 @@
             const origin = document.createElement('p');
             const img = document.createElement('IMG');
          
-            console.dir(obj.users[key]);
-            name.innerHTML = '<p>Recipe Name: </p>'+ obj.users[key].name;
-            rLink.innerHTML ='<p>Recipe Link: </p>' + obj.users[key].recipeLink;
-            cookTime.innerHTML = '<p>Cook Time: </p>'+ obj.users[key].cookTime;
-            description.innerHTML = '<p>Description: </p>'+ obj.users[key].description;
-            origin.innerHTML = '<p>Recipe Origin: </p>' + obj.users[key].origin;
+            name.innerHTML = `<p><b>Recipe Name:</b> ${obj.users[key].name} </p>`;
+            rLink.innerHTML =`<p><b>Recipe:</b> <a href=${obj.users[key].recipeLink}>Link</a></p>`;
+            cookTime.innerHTML = `<p><b>Cook Time:</b> ${obj.users[key].cookTime} minutes </p>`;
+            description.innerHTML = '<p><b>Description: </b></p>'+ obj.users[key].description;
+            origin.innerHTML = `<p><b>Recipe Origin:</b> ${obj.users[key].origin}</p>`  ;
             
-
+            div.setAttribute('class', "recipieBox");
             img.setAttribute('src', obj.users[key].photo);
+            
             // recipeLink.setAttribute('href',obj.users[key].recipeLink);
 
 
@@ -67,10 +70,12 @@
 
     const handleResponse = (xhr,parseResponse) => {
       const content = document.querySelector('#content');
+
       
       switch(xhr.status) {
         case 200: //success
-          content.innerHTML = `<b>Success</b>`;
+          console.log("created");
+          // content.innerHTML = ``;
           break;
         case 201: //created
           content.innerHTML = '<b>Create</b>';
@@ -133,14 +138,10 @@
 
       // const urlField = userForm.querySelector('#urlField');
       // const methodSelect = userForm.querySelector('#methodSelect');
-      console.dir(url);
-      console.dir(type);
-
-
 
       xhr.open(type, url);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.setRequestHeader('Accept', 'application/json');
+      // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      // xhr.setRequestHeader('Accept', 'application/json');
       
       
       if(type === 'get'){
@@ -164,7 +165,7 @@
       const sendAll = document.getElementById('postData');
 
       const addUser = (e) => sendPost(e, nameForm);
-      postData.addEventListener('click', addUser);
+      sendAll.addEventListener('click', addUser);
 
 
       const userForm = document.querySelector('#userForm');
@@ -176,6 +177,7 @@
       getRecipe.addEventListener('click', e =>{
         e.preventDefault();
         sendGetOrHead('/getUsers','get', e);
+        sendGetOrHead('/getUsers','head', e);
       });
 
 
@@ -187,16 +189,23 @@
 </head>
 <body>
   <section id="top">
-    <h3>Cook Book</h3>
+    <h3 id="title">Recipes at Midnight </h3>
+    
     <form id="nameForm" action="/addUser" method="post">
+      <div class = box1>
+
       <label for="name">Recipe Name: </label>
       <input id="nameField" type="text" name="name" />
 
       <label for="recipeLink">Recipe Link: </label>
       <input id="recipeLinkField" type="url" name="recipeLink" />
 
-      <label for="cookTime">Cook time: </label>
-      <input id="timeField" type="number" name="cookTime"/>
+      <label for="cookTime">Cook time in minutes: </label>
+      <input id="timeField" type="number" name="cookTime" min=1 max=60 />
+
+      </div>
+
+      <div class = box2> 
 
       <label for="photo">Photo: </label>
       <input id="photoField" type="url" name="photo" />
@@ -207,19 +216,21 @@
       <label for="description">Description of recipe: </label>
       <input id="descriptionField" type="text" name="description" />
 
+      </div>
 
-      <input id="postData" type="submit" value="Add User" />
+
+      <br><input class="buttonS" id="postData" type="submit" value="Add Recipe" />
     </form>
     <form id="userForm" action="/getUsers" method="get">
-      <select id="'urlField'">
+      <!-- <select id="'urlField'">
         <option value="'/getUsers'">/getUsers</option>
         <option value="'/notReal'">/notReal</option>
-      </select>
-      <select id="methodSelect">
+      </select> -->
+      <!-- <select id="methodSelect">
         <option value="get">GET</option>
         <option value="head">HEAD</option>
-      </select>
-      <input type="submit" value="send" />
+      </select> -->
+      <input class="buttonS" type="submit" value="reset" />
     </form>
   </section>
   <section id="content">

@@ -3,6 +3,7 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  background-image: url(https://people.rit.edu/zah8756/430/food.png);
 }
 
 #top {
@@ -15,7 +16,127 @@ html, body {
 }
 
 #content {
-  margin-top: 100px;
-  font-size: 2em;
+  margin-top: 10px;
+  margin-left:25px;
+  margin-right:25px; 
+  display: flex;
+
+  flex-flow: row wrap;
   text-align: center;
+  /* background-color:blue; */
+  align-content:stretch;
+  font-family: 'David Libre', serif;
+  font-size: 1.3em;
+}
+
+.recipieBox {
+  width: 15.2%;
+  height: 10%;
+  max-height:492px;
+  overflow-y:auto;
+  /* display: inline-flex; */
+  background-color:#9164fadc;
+  /* overflow: auto; */
+
+  border-color: black;
+  border-style: solid;
+  border-width: 1.5px;
+  margin:10px; 
+}
+
+.buttonS{
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: black;
+  background-color: #cdfa64;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  margin-bottom:15px; 
+}
+
+.buttonS:hover {background-color: #93b349}
+
+.buttonS:active {
+  background-color: #93b349;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+a:link, a:visited {
+  background-color: #cdfa64;
+  color: black;
+  padding: 6px 8px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: #93b349;
+}
+
+#nameForm{
+text-align: center;
+
+font-family: 'David Libre', serif;
+font-size: 20px;
+}
+
+#title{
+  font-size: 100px;
+  font-family: 'Oleo Script Swash Caps', cursive;
+  text-shadow: 2px 2px grey;
+}
+
+img{
+  margin-top: 20px;
+  width: 180px;
+  height:180px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+}
+
+label{
+  font-weight: bold;
+  font-size: 30px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+@media screen and (max-width:800px){
+  #content{
+    flex-flow:column nowrap;
+    justify-content: center;
+    margin-left: 30%;
+
+  }
+
+  #nameForm{
+    margin-left:6% 
+    }
 }
